@@ -31,6 +31,7 @@ $(document).ready(function() {
             success: function () {
 
                 $('#close_btn').click();
+                $('#no-data').text('');
 
                 loadTable();
                 loadPagination();

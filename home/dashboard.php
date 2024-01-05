@@ -6,16 +6,31 @@
         header ("Location: index.php?page=login");
         exit;
     }
+    date_default_timezone_set('Asia/Jakarta');
+    
     $user = $_SESSION['user'];
-    unset ($_SESSION['rows_page']);
+    $_SESSION['limit_rows'] = 10;
 
-    $query = "SELECT * FROM tabel WHERE user = '$user'";
-    $result = mysqli_query($db, $query);
+    $result = mysqli_query($db, "SELECT * FROM tabel WHERE user = '$user'");
+    $count = mysqli_num_rows($result);
 
-    if (isset($_GET['p'])) {
+    while ($row = mysqli_fetch_assoc($result)) {
 
-        $_SESSION['rows_page'] = $_GET['p'];
+        if (date("d/m/Y, H:i") >= $row['expire_16hr']) {
+
+            $id = $row['id'];
+            mysqli_query($db, "DELETE FROM tabel WHERE id = '$id' AND user = '$user'");
+        }
+        if ($row['expire_16hr'] == 'NULL') {
+
+            $id = $row['id'];
+            $date_16hr = date('d/m/Y, H:i', strtotime('+160 hours'));
+
+            mysqli_query($db, "UPDATE tabel SET expire_16hr = '$date_16hr' WHERE user = '$user' AND id = '$id'");
+        }
     }
+    $_SESSION['active_page'] = isset ($_GET['p']) ? $_GET['p'] : 1;
+    $_SESSION['start_data'] = (($_SESSION['limit_rows'] * $_SESSION['active_page']) - $_SESSION['limit_rows']);
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +53,7 @@
                 <a href="" class="navbar-brand fw-semibold text-white">Dashboard</a>
             </div>
             <div>
-                <input class="form-control px-2.5 py-1 border-0 me-2" type="search" name="keyword" id="keyword" placeholder="Find by Email" aria-label="Search">
+                <input class="form-control px-2.5 bg-green-500 rounded-1 text-white py-1 me-2 placeholder:text-white focus:bg-green-500 focus:ring-1 focus:ring-white" type="search" name="keyword" id="keyword" placeholder="Find by Email" aria-label="Search">
             </div>
         </div>
     </nav>
@@ -79,8 +94,8 @@
                     </tbody>
                     </table>
 
-                    <?php if (!mysqli_num_rows($result)) : ?>
-                        <p class="text-sm text-center text-secondary">There are no data availables here</p>
+                    <?php if (!$count) : ?>
+                        <p class="text-sm text-center text-secondary" id="no-data">There are no data availables here</p>
                     <?php else : ?>
                         <p class="text-md text-center text-secondary" id="loading-data"><i class="bi bi-arrow-repeat me-1"></i>Please wait..</p>
                     <?php endif; ?>
@@ -90,7 +105,7 @@
             <div class="row">
 
                 <div class="col-2">
-                    <button class="btn btn-sm bg-blue-600 text-white hover:bg-blue-700" type="button" data-bs-toggle="modal" data-bs-target="#input_data" id="input_btn">Input data</button>
+                    <button class="bg-blue-600 p-2 text-sm rounded-1 text-white focus-ring focus-ring-white hover:bg-blue-700" type="button" data-bs-toggle="modal" data-bs-target="#input_data" id="input_btn">Input data</button>
                 </div>
 
                 <div class="col-10">
@@ -108,7 +123,7 @@
     <div class="modal fade" id="input_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="input_data_label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="home/ajax/dashboard-createdata.php" method="post" id="form_add">
+                <form action="home/ajax/dashboard-createdata.php" method="post" id="form_add" autocomplete="off">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="input_data_label">Input Account Form</h1>
                     </div>
@@ -116,7 +131,7 @@
                         <div>
                             <div class="mb-3">
                                 <label for="email" class="form-label mb-1">Email address</label>
-                                <input type="email" name="email" class="form-control rounded border border-dark" id="email" placeholder="Enter Email" autocomplete="off">
+                                <input type="email" name="email" class="form-control rounded border border-dark" id="email" placeholder="Enter Email">
                             </div>
                             <div class="mb-3">
                                 <label for="email_pw" class="form-label mb-1">Email password</label>
@@ -138,14 +153,14 @@
     </div>
 
     <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="toast_alert" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="toast_alert" class="toast border border-black" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-zinc-300">
                 <strong class="me-auto"><i class="bi bi-info-circle me-2"></i>Information</strong>
                 <small>Now</small>
-                <button type="button" class="btn-close text-red-600 text-lg mb-2 hover:text-red-700" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-lg me-2"></i></button>
+                <button type="button" class="btn-close text-red-600 mb-2 hover:text-red-700" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-lg me-2"></i></button>
             </div>
-            <div class="toast-body">
-                Successfully inserted your data!
+            <div class="toast-body border-top border-black">
+                Successfully added your data!
             </div>
         </div>
     </div>

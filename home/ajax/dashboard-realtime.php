@@ -1,18 +1,23 @@
 <?php
 
-    include '../../database/connect.php';
+    require '../../database/connect.php';
 
+    date_default_timezone_set('Asia/Jakarta');
     session_start();
+
     $user = $_SESSION['user'];
 
-    $query = "SELECT * FROM tabel WHERE user = '$user'";
+    $data_start = $_SESSION['start_data'];
+    $rows_limit = $_SESSION['limit_rows'];
+
+    $query = "SELECT * FROM tabel WHERE user = '$user' ORDER BY id ASC LIMIT $data_start, $rows_limit";
     $result = mysqli_query($db, $query);
 ?>
 
 <?php $id = 0; ?>
 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
     <tr>
-        <th scope="row"><?= $id+1; ?></th>
+        <th scope="row"><?= ($id+1) + ($_SESSION['limit_rows'] * ($_SESSION['active_page'] - 1)); ?></th>
         <td><?= $row['tanggal'] ?></td>
         <td><?= $row['email'] ?></td>
         <td><?= $row['email_pw'] ?></td>

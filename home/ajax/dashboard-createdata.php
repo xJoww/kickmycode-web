@@ -15,7 +15,9 @@
 
         $date_today = date("d/m/Y, H:i");
         $date_later = date('d/m/Y, H:i', strtotime('+144 hours'));
-        $date_6hr = date('d/m/Y, H:i', strtotime('+150 hours'));
 
-        mysqli_query($db, "INSERT INTO tabel (id, user, tanggal, expire, expire_6hr, email, email_pw, stake_pw) VALUES ('', '$user', '$date_today', '$date_later', '$date_6hr', '$email', '$email_pw', '$stake_pw')");
+        $date_6hr = date('d/m/Y, H:i', strtotime('+150 hours'));
+        $date_16hr = date('d/m/Y, H:i', strtotime('+160 hours'));
+
+        mysqli_query($db, "INSERT INTO tabel (user, tanggal, expire, expire_6hr, expire_16hr, email, email_pw, stake_pw) VALUES ('$user', '$date_today', '$date_later', '$date_6hr', '$date_16hr', '$email', '$email_pw', '$stake_pw')");
     }

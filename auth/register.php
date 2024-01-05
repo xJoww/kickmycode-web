@@ -15,7 +15,7 @@
 
             $password = password_hash($password, PASSWORD_DEFAULT);
 
-            $query = "INSERT INTO akun (`id`, `email`, `password`) VALUES ('', '$email', '$password')";
+            $query = "INSERT INTO akun (`email`, `password`) VALUES ('$email', '$password')";
             $result = mysqli_query($db, $query);
 
             if (mysqli_affected_rows($db)) {
