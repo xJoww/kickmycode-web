@@ -44,22 +44,32 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="jQuery/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="assets/js/dashboard.js?v=1"></script>
+    <style>
+        @media screen and (max-width: 575.99px) {
+            
+            #dashboard {
+
+                visibility: hidden;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar bg-green-500">
         <div class="container-fluid my-2">
             <div>
-                <button type="button" class="text-white text-lg me-2 border rounded-1 px-1 py-0 hover:border-0 hover:bg-white" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar"><i class="bi bi-list hover:text-green-500"></i></button>
-                <a href="" class="navbar-brand fw-semibold text-white">Dashboard</a>
+                <button type="button" class="text-white text-lg max-md:text-md me-2 border rounded-1 px-1 py-0 hover:border-0 hover:bg-white" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar"><i class="bi bi-list hover:text-green-500"></i></button>
+                <a href="" id="dashboard" class="navbar-brand fw-semibold text-lg max-md:text-md text-white">Dashboard</a>
             </div>
             <div>
-                <input class="form-control px-2.5 bg-green-500 rounded-1 text-white py-1 me-2 placeholder:text-white focus:bg-green-500 focus:ring-1 focus:ring-white" type="search" name="keyword" id="keyword" placeholder="Find by Email" aria-label="Search">
+                <input class="form-control text-md max-md:text-sm px-2.5 bg-green-500 rounded-1 text-white py-1 me-2 placeholder:text-white focus:bg-green-500 focus:ring-1 focus:ring-white" type="search" name="keyword" id="keyword" placeholder="Find by Email" aria-label="Search">
             </div>
         </div>
     </nav>
     <div class="offcanvas offcanvas-start text-zinc-500" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
         <div class="offcanvas-header bg-green-500">
-            <h5 class="offcanvas-title text-white fs-4 fw-bold" id="sidebarLabel">KickMyCode</h5>
+            <h5 class="offcanvas-title text-white fs-4 fw-bold text-sm max-md:text-md" id="sidebarLabel">KickMyCode</h5>
+            <button class="btn-close text-red-500" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <div class="fw-semibold text-md bg-zinc-300 p-2 rounded hover:text-zinc-600" style="cursor: default;">
@@ -85,23 +95,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 mt-2">
-                    <table class="table table-striped table-hover table-responsive border-zinc-700 hover:bg-zinc-800">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Created At</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Email password</th>
-                            <th scope="col">Stake password</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="live-table">
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped table-hover border-zinc-700 hover:bg-zinc-800">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Email password</th>
+                                    <th scope="col">Stake password</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="live-table">
 
-                    </tbody>
-                    </table>
-
+                            </tbody>
+                        </table>
+                    </div>
                     <?php if (!$count) : ?>
                         <p class="text-sm text-center text-secondary" id="no-data">There are no data availables here</p>
                     <?php else : ?>
@@ -110,13 +121,13 @@
 
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-3">
 
-                <div class="col-2">
-                    <button class="bg-blue-600 p-2 text-sm rounded-1 text-white focus-ring focus-ring-white hover:bg-blue-700" type="button" data-bs-toggle="modal" data-bs-target="#input_data" id="input_btn">Input data</button>
+                <div class="col-md-2 col">
+                    <button class="bg-blue-600 p-2 text-sm max-md:text-xs rounded-1 text-white focus-ring focus-ring-white hover:bg-blue-700" type="button" data-bs-toggle="modal" data-bs-target="#input_data" id="input_btn">Input data</button>
                 </div>
 
-                <div class="col-10">
+                <div class="col-md-10 col">
                     <nav aria-label="Tables pagination">
                         <ul class="pagination float-end" id="live-pagination">
 
