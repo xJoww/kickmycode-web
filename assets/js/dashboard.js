@@ -21,6 +21,36 @@ $(document).ready(function() {
     }
     $('#form_add').on('submit', function (e) {
 
+        $('#email').on('keyup', function () {
+
+            var length = $('#email').val().length;
+
+            if (length < 10) {
+
+                $('#email').removeClass('focus-ring-success').addClass('focus-ring-danger');
+            }
+            else $('#email').removeClass('focus-ring-danger').addClass('focus-ring-success');
+        })
+        $('#email_pw').on('keyup', function () {
+
+            var length = $('#email_pw').val().length;
+
+            if (length < 1) {
+
+                $('#email_pw').removeClass('focus-ring-success').addClass('focus-ring-danger');
+            }
+            else $('#email_pw').removeClass('focus-ring-danger').addClass('focus-ring-success');
+        })
+        $('#stake_pw').on('keyup', function () {
+
+            var length = $('#stake_pw').val().length;
+
+            if (length < 1) {
+
+                $('#stake_pw').removeClass('focus-ring-success').addClass('focus-ring-danger');
+            }
+            else $('#stake_pw').removeClass('focus-ring-danger').addClass('focus-ring-success');
+        })
         e.preventDefault();
 
         $.ajax({
@@ -66,6 +96,51 @@ $(document).ready(function() {
             loadTable();
         }
     });
+    $('#email').on('keyup', function () {
+
+        var len =  $('#email').val().length;
+
+        if (len < 10) {
+
+            $('#email').removeClass('focus-ring-success').addClass('focus-ring-danger');
+            $('#email_desc').text('* The email must be longer than 10 characters.');
+        }
+        else {
+
+            $('#email').removeClass('focus-ring-danger').addClass('focus-ring-success');
+            $('#email_desc').text('');
+        }
+    })
+    $('#email_pw').on('keyup', function () {
+
+        var len =  $('#email_pw').val().length;
+
+        if (len < 1) {
+
+            $('#email_pw').removeClass('focus-ring-success').addClass('focus-ring-danger');
+            $('#email_pw_desc').text('* The email password must be filled.');
+        }
+        else {
+
+            $('#email_pw').removeClass('focus-ring-danger').addClass('focus-ring-success');
+            $('#email_pw_desc').text('');
+        }
+    })
+    $('#stake_pw').on('keyup', function () {
+
+        var len =  $('#stake_pw').val().length;
+
+        if (len < 1) {
+
+            $('#stake_pw').removeClass('focus-ring-success').addClass('focus-ring-danger');
+            $('#stake_pw_desc').text('* The stake password must be filled.');
+        }
+        else {
+
+            $('#stake_pw').removeClass('focus-ring-danger').addClass('focus-ring-success');
+            $('#stake_pw_desc').text('');
+        }
+    })
 });
 function loadTable() {
 

@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="jQuery/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" src="assets/js/dashboard.js?v=1"></script>
+    <script type="text/javascript" src="assets/js/dashboard.js"></script>
     <style>
         @media screen and (max-width: 575.99px) {
             
@@ -151,15 +151,18 @@
                         <div>
                             <div class="mb-3">
                                 <label for="email" class="form-label mb-1">Email address</label>
-                                <input type="email" name="email" class="form-control rounded border border-dark" id="email" placeholder="Enter Email">
+                                <input type="email" name="email" class="form-control rounded border border-dark focus-ring focus-ring-danger" id="email" placeholder="Enter Email" aria-describedby="email_desc">
+                                <div id="email_desc" class="form-text text-xs text-red-500"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="email_pw" class="form-label mb-1">Email password</label>
-                                <input type="text" name="email_pw" class="form-control rounded border border-dark mb-1" id="email_pw" placeholder="Enter email password">
+                                <input type="text" name="email_pw" class="form-control rounded border border-dark focus-ring focus-ring-danger mb-1" id="email_pw" placeholder="Enter email password" aria-describedby="email_pw_desc">
+                                <div id="email_pw_desc" class="form-text text-xs text-red-500"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="stake_pw" class="form-label mb-1">Stake password</label>
-                                <input type="text" name="stake_pw" class="form-control rounded border border-dark mb-1" id="stake_pw" placeholder="Enter stake passwrod">
+                                <input type="text" name="stake_pw" class="form-control rounded border border-dark focus-ring focus-ring-danger mb-1" id="stake_pw" placeholder="Enter stake passwrod" aria-describedby="stake_pw_desc">
+                                <div id="stake_pw_desc" class="form-text text-xs text-red-500"></div>
                             </div>
                         </div>
                     </div>
