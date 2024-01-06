@@ -19,6 +19,7 @@
     <tr>
         <th scope="row"><?= ($id+1) + ($_SESSION['limit_rows'] * ($_SESSION['active_page'] - 1)); ?></th>
         <td><?= $row['tanggal'] ?></td>
+        <td><?= $row['expire'] ?></td>
         <td><?= $row['email'] ?></td>
         <td><?= $row['email_pw'] ?></td>
         <td><?= $row['stake_pw'] ?></td>
