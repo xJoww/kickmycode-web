@@ -28,7 +28,9 @@
           header ("Location: index.php?page=dashboard");
           exit;
         }
+        else $wrong_pw = true;
       }
+      else $invalid_email = true;
     }
   }
 ?>
@@ -46,9 +48,12 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <script type="text/javascript" src="jQuery/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/login.js?v=1"></script>
 
 <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -154,17 +159,28 @@
 
     
 <main class="form-signin w-100 m-auto border border-dark rounded-2 p-4">
-  <form action="" method="post">
-    <h1 class="h3 mb-1 fw-normal text-center text-green-500">KickMyCode</h1>
+  <form action="" method="post" id="form_login">
+    <h1 class="h3 mb-1 fw-semibold text-center text-green-500">KickMyCode</h1>
     <p class="text-xs mb-4 text-center" style="letter-spacing: 5px">by xJoww</p>
 
-    <div class="form-floating">
-      <input type="email" name="email" class="form-control focus-ring focus-ring-dark border border-dark" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
+    <div class="form-floating mb-3">
+      <input type="email" name="email" class="form-control focus-ring rounded focus-ring-dark border border-dark" id="email" placeholder="name@example.com" aria-describedby="email_desc">
+      <label for="email">Email address</label>
+      <?php if (isset($invalid_email)) : ?>
+        <div id="email_desc" class="form-text text-xs text-red-500">* The email was not found.</div>
+      <?php else : ?>
+        <div id="email_desc" class="form-text text-xs text-red-500"></div>
+      <?php endif; ?>
     </div>
     <div class="form-floating mb-4">
-      <input type="password" name="password" class="form-control focus-ring focus-ring-dark border border-dark" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
+      <input type="password" name="password" class="form-control focus-ring rounded focus-ring-dark border border-dark mb-0" id="password" placeholder="Password" aria-describedby="password_desc">
+      <label for="password">Password</label>
+      <button id="reveal_btn" class="text-xs" type="button"><i class="bi bi-eye-fill me-1" id="reveal-eye"></i>Reveal password</button>
+      <?php if (isset($wrong_pw)) : ?>
+        <div id="password_desc" class="form-text text-xs text-red-500">* Incorrect password.</div>
+      <?php else : ?>
+        <div id="password_desc" class="form-text text-xs text-red-500"></div>
+      <?php endif; ?>
     </div>
 
     <!-- <div class="form-check text-start my-3">

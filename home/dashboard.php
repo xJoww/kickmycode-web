@@ -58,8 +58,8 @@
         </div>
     </nav>
     <div class="offcanvas offcanvas-start text-zinc-500" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title text-green-500 fs-4 fw-bold" id="sidebarLabel">KickMyCode</h5>
+        <div class="offcanvas-header bg-green-500">
+            <h5 class="offcanvas-title text-white fs-4 fw-bold" id="sidebarLabel">KickMyCode</h5>
         </div>
         <div class="offcanvas-body">
             <div class="fw-semibold text-md bg-zinc-300 p-2 rounded hover:text-zinc-600" style="cursor: default;">
@@ -70,6 +70,14 @@
             </div>
             <div class="fw-semibold text-md hover:text-zinc-600">
                 <a href="?page=logout"><i class="bi bi-box-arrow-in-left me-2"></i>Logout</a>
+            </div>
+        </div>
+        <div class="offcanvas-footer">
+            <div class="mb-1 text-center text-sm">
+                Copyright <i class="bi bi-c-circle"></i> 2024 by <span class="fw-semibold">xJoww</span>
+            </div>
+            <div class="mb-3 text-center text-xs">
+                <a href="?page=report-bug"><u>Report bug</u></a> - <a href="https://www.github.com/xJoww" target="_blank"><u>Contact</u></a> - <a href="?page=report-abuse"><u>Report abuse</u></a>
             </div>
         </div>
     </div>

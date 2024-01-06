@@ -13,19 +13,24 @@
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $password = password_hash($password, PASSWORD_DEFAULT);
+            $exist = mysqli_query($db, "SELECT * FROM akun WHERE email = '$email'");
 
-            $query = "INSERT INTO akun (`email`, `password`) VALUES ('$email', '$password')";
-            $result = mysqli_query($db, $query);
+            if (!mysqli_num_rows($exist)) {
 
-            if (mysqli_affected_rows($db)) {
+              $password = password_hash($password, PASSWORD_DEFAULT);
+              mysqli_query($db, "INSERT INTO akun (`email`, `password`) VALUES ('$email', '$password')");
 
-                $_SESSION['user'] = $email;
-                $_SESSION['auth'] = true;
+              if (mysqli_affected_rows($db)) {
 
-                header ("Location: index.php?page=dashboard");
-                exit;
+                  $_SESSION['user'] = $email;
+                  $_SESSION['auth'] = true;
+
+                  header ("Location: index.php?page=dashboard");
+                  exit;
+              }
+              else $unknown_error = true;
             }
+            else $email_exist = true;
         }
     }
 ?>
@@ -44,7 +49,9 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
+
+    <script type="text/javascript" src="jQuery/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/register.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
@@ -152,21 +159,32 @@
 
     
 <main class="form-signin w-100 m-auto border rounded-2 p-4 border border-dark">
-  <form action="" method="post">
-    <h1 class="h3 mb-1 fw-normal text-center text-green-500">KickMyCode</h1>
+  <form action="" method="post" id="form_regis">
+    <h1 class="h3 mb-1 fw-semibold text-center text-green-500">KickMyCode</h1>
     <p class="text-xs mb-4 text-center" style="letter-spacing: 5px">by xJoww</p>
     <div>
         <div class="mb-3">
             <label for="email" class="form-label mb-1">Email address</label>
-            <input type="email" class="form-control rounded border border-dark" name="email" id="email" placeholder="Enter Email">
+            <input type="email" class="form-control rounded border border-dark focus-ring focus-ring-dark" name="email" id="email" placeholder="Enter Email" aria-describedby="email_desc">
+            <?php if (isset($email_exist)) : ?>
+              <div id="email_desc" class="form-text text-xs text-red-500">* This email is already exist.</div>
+            <?php else : ?>
+              <div id="email_desc" class="form-text text-xs text-red-500"></div>
+            <?php endif; ?>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label mb-1">Password</label>
-            <input type="password" class="form-control rounded border border-dark mb-1" name="password" id="password" placeholder="Enter Password">
-            <p class="text-xs"><i class="bi bi-eye-fill me-1"></i>Reveal password</p>
-        </div>
-        <div class="mb-3">
+            <input type="password" class="form-control rounded border border-dark focus-ring focus-ring-dark mb-0" name="password" id="password" placeholder="Enter Password" aria-describedby="password_desc">
+            <button id="reveal_btn" class="text-xs" type="button"><i class="bi bi-eye-fill me-1" id="reveal-eye"></i>Reveal password</button>
+            <?php if (isset($unknown_error)) : ?>
+              <div id="password_desc" class="form-text text-xs text-red-500">* The system is busy, try again later.</div>
+            <?php else : ?>
+              <div id="password_desc" class="form-text text-xs text-red-500"></div>
+            <?php endif; ?>
+          </div>
+        <div>
             <button class="btn w-100 py-2 text-white bg-green-600 hover:bg-green-700" name="sign_up" type="submit">Sign Up</button>
+            <a href="?page=login" class="btn w-100 py-2 text-white bg-zinc-400 hover:bg-zinc-500 mt-2">Login</a>
         </div>
     </div>
   </form>
