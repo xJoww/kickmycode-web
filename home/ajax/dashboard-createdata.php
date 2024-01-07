@@ -3,8 +3,15 @@
     include '../../database/connect.php';
 
     session_start();
-    $user = $_SESSION['user'];
 
+    if (isset($_COOKIE['user_email'])) {
+
+        $user = $_COOKIE['user_email'];
+    }
+    else {
+
+        $user = $_SESSION['user'];
+    }
     if (isset($_POST['email']) && isset($_POST['email_pw']) && isset($_POST['stake_pw'])) {
 
         $email = $_POST['email'];

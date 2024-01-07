@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Jan 2024 pada 10.07
+-- Waktu pembuatan: 07 Jan 2024 pada 14.07
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -59,7 +59,20 @@ CREATE TABLE `auto_auth` (
 --
 
 INSERT INTO `auto_auth` (`user`, `user_hash`, `pass_hash`, `expire`) VALUES
-('admin@gmail.com', '$2y$10$.ZzpTmfRsLK3Gzp0sVKWVeL3LS8g6NyZnBk3.Ft6AxzwEOx239uPy', '$2y$10$I15.t75Iyjp/NC/QzolB0OLNg5MyDZQp2Xi0GvPrJKF8ihOxydKfO', '14/01/2024, 10:04');
+('admin@gmail.com', '$2y$10$.ZzpTmfRsLK3Gzp0sVKWVeL3LS8g6NyZnBk3.Ft6AxzwEOx239uPy', '$2y$10$I15.t75Iyjp/NC/QzolB0OLNg5MyDZQp2Xi0GvPrJKF8ihOxydKfO', '14/01/2024, 10:04'),
+('admin@gmail.com', '$2y$10$Px2Qn7u1721iNQxwp3F6FuJ6zDAgNBHW0/cVGGj1cyOhihbGPES9q', '$2y$10$KolUgQNnRyZpanjNzT4jnOTVo3IOkDyaGQSubGKtGm5LMkxelI.si', '14/01/2024, 12:10');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `notification`
+--
+
+CREATE TABLE `notification` (
+  `user` varchar(36) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `title` varchar(16) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `message` varchar(24) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 

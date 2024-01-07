@@ -2,8 +2,15 @@
 
     include '../../database/connect.php';
 
+    if (isset($_COOKIE['user_email'])) {
+
+        $user = $_COOKIE['user_email'];
+    }
+    else {
+
+        $user = $_SESSION['user'];
+    }
     session_start();
-    $user = $_SESSION['user'];
 
     if (isset($_POST['search'])) {
 

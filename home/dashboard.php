@@ -7,8 +7,15 @@
         exit;
     }
     date_default_timezone_set('Asia/Jakarta');
-    
-    $user = $_SESSION['user'];
+
+    if (isset($_COOKIE['user_email'])) {
+
+        $user = $_COOKIE['user_email'];
+    }
+    else {
+
+        $user = $_SESSION['user'];
+    }
     $_SESSION['limit_rows'] = 10;
 
     $result = mysqli_query($db, "SELECT * FROM tabel WHERE user = '$user'");
@@ -61,8 +68,27 @@
                 <button type="button" class="text-white text-lg max-md:text-md me-2 border rounded-1 px-1 py-0 hover:border-0 hover:bg-white" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar"><i class="bi bi-list hover:text-green-500"></i></button>
                 <a href="" id="dashboard" class="navbar-brand fw-semibold text-lg max-md:text-md text-white">Dashboard</a>
             </div>
-            <div>
+            <div class="d-flex flex-row">
                 <input class="form-control text-md max-md:text-sm px-2.5 bg-green-500 rounded-1 text-white py-1 me-2 placeholder:text-white focus:bg-green-500 focus:ring-1 focus:ring-white" type="search" name="keyword" id="keyword" placeholder="Find by Email" aria-label="Search">
+                <button type="button" class="ms-2 me-1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell-fill text-lg text-white"></i>
+                    <span class="position-absolute top-6 start-90 translate-middle p-1 bg-yellow-500 border border-light rounded-circle"></span>
+                </button>
+                <div class="absolute top-14 right-64">
+                    <ul class="dropdown-menu">
+                        <li>
+                            <h1 class="text-md ms-3 mt-2 mb-3 fw-semibold">Notification - 99+</h1>
+                            <button type="button" class="dropdown-item my-1 hover:bg-zinc-200 active:text-black active:bg-zinc-200">
+                                <h2 class="text-sm fw-semibold">Welcome to KickMyCode</h2>
+                                <p class="text-xs">The red carpet is on your foot, come <br> walk on it!</p>
+                            </button>
+                            <button type="button" class="dropdown-item my-1 hover:bg-zinc-200 active:text-black active:bg-zinc-200">
+                                <h2 class="text-sm fw-semibold">An email was expired!</h2>
+                                <p class="text-xs fst-italic">Click here for more information.</p>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>

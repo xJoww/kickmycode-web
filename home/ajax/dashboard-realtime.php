@@ -5,8 +5,14 @@
     date_default_timezone_set('Asia/Jakarta');
     session_start();
 
-    $user = $_SESSION['user'];
+    if (isset($_COOKIE['user_email'])) {
 
+        $user = $_COOKIE['user_email'];
+    }
+    else {
+
+        $user = $_SESSION['user'];
+    }
     $data_start = $_SESSION['start_data'];
     $rows_limit = $_SESSION['limit_rows'];
 

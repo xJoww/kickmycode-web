@@ -3,8 +3,14 @@
     require '../../database/connect.php';
 
     session_start();
-    $user = $_SESSION['user'];
+    if (isset($_COOKIE['user_email'])) {
 
+        $user = $_COOKIE['user_email'];
+    }
+    else {
+
+        $user = $_SESSION['user'];
+    }
     $query = "SELECT * FROM tabel WHERE user = '$user' ORDER BY id ASC";
     $result = mysqli_query($db, $query);
 

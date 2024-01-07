@@ -141,6 +141,11 @@ $(document).ready(function() {
             $('#stake_pw_desc').text('');
         }
     })
+    $('#bell').click(function() {
+
+        alert('aa')
+        $('#dropdown').toggleClass('show');
+    });
 });
 function loadTable() {
 
