@@ -1,11 +1,39 @@
 <?php
   require 'database/connect.php';
 
+  if (isset($_COOKIE['user_email']) && isset($_COOKIE['user_pass'])) {
+
+      $user = $_COOKIE['user_email'];
+      $pass = $_COOKIE['user_pass'];
+
+      $result = mysqli_query($db, "SELECT * FROM auto_auth WHERE user = '$user'");
+
+      if (mysqli_num_rows($result)) {
+
+          $row = mysqli_fetch_assoc($result);
+
+          if (password_verify($user, $row['user_hash']) && password_verify($pass, $row['pass_hash'])) {
+
+              if (date('d/m/Y, H:i') >= $row['expire']) {
+
+                  mysqli_query($db, "DELETE FROM auto_auth WHERE user = '$user'");
+              }
+              $_SESSION['auth'] = true;
+          }
+      }
+      else {
+
+          $autofill_value = true;
+
+          setcookie('user_email', '', time() - 1);
+          setcookie('user_pass', '', time() - 1);
+      }
+  }
   if (isset($_SESSION['auth'])) {
 
-    header ("Location: index.php?page=dashboard");
-    exit;
-}
+      header ("Location: index.php?page=dashboard");
+      exit;
+  }
   if (isset($_POST['sign_in'])) {
 
     if (isset($_POST['email']) && $_POST['password']) {
@@ -22,6 +50,22 @@
 
         if (password_verify($password, $row['password'])) {
 
+          if (isset($_POST['remember_me'])) {
+
+              $user_hash = password_hash($email, PASSWORD_DEFAULT);
+              $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+
+              setcookie('user_email', $email, time() + (60*60*24)*7);
+              setcookie('user_pass', $password, time() + (60*60*24)*7);
+
+              $date_7d = date('d/m/Y, H:i', strtotime('+168 hours'));
+              mysqli_query($db, "INSERT INTO auto_auth (user, user_hash, pass_hash, expire) VALUES ('$email', '$user_hash', '$pass_hash', '$date_7d')");
+          
+              if (mysqli_affected_rows($db)) {
+
+                  $_SESSION['user'] = $_POST['email'];
+              }
+          }
           $_SESSION['user'] = $email;
           $_SESSION['auth'] = true;
 
@@ -164,23 +208,48 @@
     <p class="text-xs mb-4 text-center" style="letter-spacing: 5px">by xJoww</p>
 
     <div class="form-floating mb-3">
-      <input type="email" name="email" class="form-control focus-ring rounded focus-ring-dark border border-dark" id="email" placeholder="name@example.com" aria-describedby="email_desc">
-      <label for="email">Email address</label>
-      <?php if (isset($invalid_email)) : ?>
-        <div id="email_desc" class="form-text text-xs text-red-500">* The email was not found.</div>
+      <?php if (!isset($autofill_value)) : ?>
+        <input type="email" name="email" class="form-control focus-ring rounded focus-ring-dark border border-dark" id="email" placeholder="name@example.com" aria-describedby="email_desc">
+        <label for="email">Email address</label>
+        <?php if (isset($invalid_email)) : ?>
+          <div id="email_desc" class="form-text text-xs text-red-500">* The email was not found.</div>
+        <?php else : ?>
+          <div id="email_desc" class="form-text text-xs text-red-500"></div>
+        <?php endif; ?>
       <?php else : ?>
-        <div id="email_desc" class="form-text text-xs text-red-500"></div>
+        <input type="email" name="email" class="form-control focus-ring rounded focus-ring-dark border border-dark" id="email" placeholder="name@example.com" aria-describedby="email_desc" value="<?= $_COOKIE['user_email']; ?>">
+        <label for="email">Email address</label>
+        <?php if (isset($invalid_email)) : ?>
+          <div id="email_desc" class="form-text text-xs text-red-500">* The email was not found.</div>
+        <?php else : ?>
+          <div id="email_desc" class="form-text text-xs text-red-500"></div>
+        <?php endif; ?>
       <?php endif; ?>
     </div>
-    <div class="form-floating mb-4">
-      <input type="password" name="password" class="form-control focus-ring rounded focus-ring-dark border border-dark mb-0" id="password" placeholder="Password" aria-describedby="password_desc">
-      <label for="password">Password</label>
-      <button id="reveal_btn" class="text-xs" type="button"><i class="bi bi-eye-fill me-1" id="reveal-eye"></i>Reveal password</button>
-      <?php if (isset($wrong_pw)) : ?>
-        <div id="password_desc" class="form-text text-xs text-red-500">* Incorrect password.</div>
+    <div class="form-floating mb-2">
+      <?php if (!isset($autofill_value)) : ?>
+        <input type="password" name="password" class="form-control focus-ring rounded focus-ring-dark border border-dark mb-0" id="password" placeholder="Password" aria-describedby="password_desc">
+        <label for="password">Password</label>
+        <button id="reveal_btn" class="text-xs" type="button"><i class="bi bi-eye-fill me-1" id="reveal-eye"></i>Reveal password</button>
+        <?php if (isset($wrong_pw)) : ?>
+          <div id="password_desc" class="form-text text-xs text-red-500">* Incorrect password.</div>
+        <?php else : ?>
+          <div id="password_desc" class="form-text text-xs text-red-500"></div>
+        <?php endif; ?>
       <?php else : ?>
-        <div id="password_desc" class="form-text text-xs text-red-500"></div>
+        <input type="password" name="password" class="form-control focus-ring rounded focus-ring-dark border border-dark mb-0" id="password" placeholder="Password" aria-describedby="password_desc" value="<?= $_COOKIE['user_pass']; ?>">
+        <label for="password">Password</label>
+        <button id="reveal_btn" class="text-xs" type="button"><i class="bi bi-eye-fill me-1" id="reveal-eye"></i>Reveal password</button>
+        <?php if (isset($wrong_pw)) : ?>
+          <div id="password_desc" class="form-text text-xs text-red-500">* Incorrect password.</div>
+        <?php else : ?>
+          <div id="password_desc" class="form-text text-xs text-red-500"></div>
+        <?php endif; ?>
       <?php endif; ?>
+    </div>
+    <div class="mb-3 form-check">
+      <input name="remember_me" type="checkbox" class="form-check-input border border-secondary text-sm active:bg-green-500 focus:bg-green-500 focus:ring focus:ring-white" id="remember_me">
+      <label class="form-check-label text-sm relative bottom-0.5" for="remember_me">Remember me for 7 days</label>
     </div>
 
     <!-- <div class="form-check text-start my-3">

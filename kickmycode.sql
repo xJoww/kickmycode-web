@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 05 Jan 2024 pada 21.23
+-- Waktu pembuatan: 07 Jan 2024 pada 10.07
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -30,15 +30,36 @@ SET time_zone = "+00:00";
 CREATE TABLE `akun` (
   `id` int(11) NOT NULL,
   `email` varchar(36) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
-  `password` varchar(300) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
+  `password` varchar(300) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `remember_me` varchar(24) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `akun`
 --
 
-INSERT INTO `akun` (`id`, `email`, `password`) VALUES
-(1, 'admin@gmail.com', '$2y$10$0dEE24kRCypWRAdBqf63o.jXHI5vNjOoX7HjfZCBHGnUv8KU58uT.');
+INSERT INTO `akun` (`id`, `email`, `password`, `remember_me`) VALUES
+(1, 'admin@gmail.com', '$2y$10$0dEE24kRCypWRAdBqf63o.jXHI5vNjOoX7HjfZCBHGnUv8KU58uT.', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `auto_auth`
+--
+
+CREATE TABLE `auto_auth` (
+  `user` varchar(36) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `user_hash` varchar(300) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `pass_hash` varchar(300) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `expire` varchar(24) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `auto_auth`
+--
+
+INSERT INTO `auto_auth` (`user`, `user_hash`, `pass_hash`, `expire`) VALUES
+('admin@gmail.com', '$2y$10$.ZzpTmfRsLK3Gzp0sVKWVeL3LS8g6NyZnBk3.Ft6AxzwEOx239uPy', '$2y$10$I15.t75Iyjp/NC/QzolB0OLNg5MyDZQp2Xi0GvPrJKF8ihOxydKfO', '14/01/2024, 10:04');
 
 -- --------------------------------------------------------
 
